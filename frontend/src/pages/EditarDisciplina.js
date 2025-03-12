@@ -1,53 +1,72 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Button, Container } from 'react-bootstrap';
-import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import api from '../services/api';
 
 const EditarDisciplina = () => {
-  const [disciplina, setDisciplina] = useState({
-    nome: '',
-    cargaHoraria: '',
-  });
   const { id } = useParams();
   const navigate = useNavigate();
+  const [nome, setNome] = useState('');
+  const [cargaHoraria, setCargaHoraria] = useState('');
+  const [curso, setCurso] = useState('');
 
   useEffect(() => {
     const fetchDisciplina = async () => {
-      const response = await axios.get(`http://localhost:5000/api/disciplinas/${id}`);
-      setDisciplina(response.data);
+      try {
+        const response = await api.get(`/disciplinas/${id}`);
+        setNome(response.data.nome);
+        setCargaHoraria(response.data.cargaHoraria);
+        setCurso(response.data.curso);
+      } catch (error) {
+        console.error('Erro ao carregar disciplina:', error);
+      }
     };
+
     fetchDisciplina();
   }, [id]);
-
-  const handleChange = (e) => {
-    setDisciplina({ ...disciplina, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/disciplinas/${id}`, disciplina);
-      navigate('/disciplinas');
-    } catch (err) {
-      console.error(err);
+      await api.put(`/disciplinas/${id}`, { nome, cargaHoraria, curso });
+      alert('Disciplina atualizada com sucesso!');
+      navigate('/disciplinas'); // Redireciona para a lista de disciplinas
+    } catch (error) {
+      console.error('Erro ao atualizar disciplina:', error);
     }
   };
 
   return (
-    <Container>
+    <div>
       <h1>Editar Disciplina</h1>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group>
-          <Form.Label>Nome</Form.Label>
-          <Form.Control type="text" name="nome" value={disciplina.nome} onChange={handleChange} required />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Carga Horária</Form.Label>
-          <Form.Control type="number" name="cargaHoraria" value={disciplina.cargaHoraria} onChange={handleChange} required />
-        </Form.Group>
-        <Button type="submit" variant="primary">Salvar</Button>
-      </Form>
-    </Container>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Nome"
+          value={nome}
+          onChange={(e) => setNome(e.target.value)}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Carga Horária"
+          value={cargaHoraria}
+          onChange={(e) => setCargaHoraria(e.target.value)}
+          required
+        />
+        <select
+          value={curso}
+          onChange={(e) => setCurso(e.target.value)}
+          required
+        >
+          <option value="">Selecione um curso</option>
+          <option value="Ciência da Computação">Ciência da Computação</option>
+          <option value="Análise e Desenvolvimento de Sistemas">Análise e Desenvolvimento de Sistemas</option>
+          <option value="Engenharia de Software">Engenharia de Software</option>
+          <option value="Engenharia de Dados">Engenharia de Dados</option>
+        </select>
+        <button type="submit">Salvar</button>
+      </form>
+    </div>
   );
 };
 
