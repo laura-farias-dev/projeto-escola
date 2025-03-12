@@ -27,6 +27,7 @@ const AdicionarAluno = () => {
         console.error('Erro ao buscar cursos:', error);
       }
     };
+
     fetchCursos();
   }, []);
 
@@ -45,36 +46,85 @@ const AdicionarAluno = () => {
   };
 
   return (
-    <Container>
-      <h1>Adicionar Aluno</h1>
+    <Container className="mt-5">
+      <h2>Adicionar Aluno</h2>
       <Form onSubmit={handleSubmit}>
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>Nome</Form.Label>
-          <Form.Control type="text" name="nome" value={aluno.nome} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            name="nome"
+            value={aluno.nome}
+            onChange={handleChange}
+            required
+          />
         </Form.Group>
-        <Form.Group>
+
+        <Form.Group className="mb-3">
           <Form.Label>Endereço</Form.Label>
-          <Form.Control type="text" name="endereco" value={aluno.endereco} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            name="endereco"
+            value={aluno.endereco}
+            onChange={handleChange}
+            required
+          />
         </Form.Group>
-        <Form.Group>
+
+        <Form.Group className="mb-3">
           <Form.Label>Data de Nascimento</Form.Label>
-          <Form.Control type="date" name="dataNascimento" value={aluno.dataNascimento} onChange={handleChange} required />
+          <Form.Control
+            type="date"
+            name="dataNascimento"
+            value={aluno.dataNascimento}
+            onChange={handleChange}
+            required
+          />
         </Form.Group>
-        <Form.Group>
+
+        <Form.Group className="mb-3">
           <Form.Label>Matrícula</Form.Label>
-          <Form.Control type="text" name="matricula" value={aluno.matricula} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            name="matricula"
+            value={aluno.matricula}
+            onChange={handleChange}
+            required
+          />
         </Form.Group>
-        <Form.Group>
+
+        <Form.Group className="mb-3">
           <Form.Label>Telefone</Form.Label>
-          <Form.Control type="text" name="telefone" value={aluno.telefone} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            name="telefone"
+            value={aluno.telefone}
+            onChange={handleChange}
+            required
+          />
         </Form.Group>
-        <Form.Group>
+
+        <Form.Group className="mb-3">
           <Form.Label>Email</Form.Label>
-          <Form.Control type="email" name="email" value={aluno.email} onChange={handleChange} required />
+          <Form.Control
+            type="email"
+            name="email"
+            value={aluno.email}
+            onChange={handleChange}
+            required
+          />
         </Form.Group>
-        <Form.Group>
+
+        {/* Dropdown fixo com cursos */}
+        <Form.Group className="mb-4">
           <Form.Label>Curso</Form.Label>
-          <Form.Select name="curso" value={aluno.curso} onChange={handleChange} required>
+          <Form.Select
+            name="curso"
+            value={aluno.curso}
+            onChange={handleChange}
+            required
+          >
+            {/* Opções fixas conforme o modelo */}
             <option value="">Selecione um curso</option>
             {cursos.map((curso) => (
               <option key={curso._id} value={curso.nome}>
@@ -83,7 +133,13 @@ const AdicionarAluno = () => {
             ))}
           </Form.Select>
         </Form.Group>
-        <Button type="submit" variant="primary">Adicionar</Button>
+
+        <Button variant="success" type="submit">
+          Adicionar
+        </Button>{' '}
+        <Button variant="secondary" onClick={() => navigate('/alunos')}>
+          Cancelar
+        </Button>
       </Form>
     </Container>
   );

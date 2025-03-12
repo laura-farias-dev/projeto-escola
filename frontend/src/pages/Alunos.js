@@ -11,25 +11,27 @@ const Alunos = () => {
       const response = await axios.get('http://localhost:5000/api/alunos');
       setAlunos(response.data);
     };
+
     fetchAlunos();
   }, []);
 
   const handleExcluir = async (id) => {
     try {
       await axios.delete(`http://localhost:5000/api/alunos/${id}`);
-      setAlunos(alunos.filter(aluno => aluno._id !== id));
+      setAlunos(alunos.filter((aluno) => aluno._id !== id));
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <Container>
-      <h1>Alunos</h1>
-      <Button as={Link} to="/alunos/novo" variant="primary" className="mb-3">
-        Adicionar Aluno
-      </Button>
-      <Table striped bordered hover>
+    <Container className="mt-5">
+      <h2 className="mb-4">Alunos</h2>
+      <Link to="/adicionar-aluno">
+        <Button variant="success" className="mb-3">Adicionar Aluno</Button>
+      </Link>
+
+      <Table striped bordered hover responsive>
         <thead>
           <tr>
             <th>Nome</th>
@@ -39,14 +41,21 @@ const Alunos = () => {
           </tr>
         </thead>
         <tbody>
-          {alunos.map(aluno => (
+          {alunos.map((aluno) => (
             <tr key={aluno._id}>
               <td>{aluno.nome}</td>
               <td>{aluno.matricula}</td>
               <td>{aluno.email}</td>
               <td>
-                <Button as={Link} to={`/alunos/editar/${aluno._id}`} variant="primary" size="sm">Editar</Button>{' '}
-                <Button variant="danger" size="sm" onClick={() => handleExcluir(aluno._id)}>Excluir</Button>
+                <Link to={`/editar-aluno/${aluno._id}`}>
+                  <Button variant="primary" size="sm">Editar</Button>
+                </Link>{' '}
+                <Link to={`/detalhar-aluno/${aluno._id}`}>
+                  <Button variant="info" size="sm">Detalhar</Button>
+                </Link>{' '}
+                <Button variant="danger" size="sm" onClick={() => handleExcluir(aluno._id)}>
+                  Excluir
+                </Button>
               </td>
             </tr>
           ))}

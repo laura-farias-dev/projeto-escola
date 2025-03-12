@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Alunos from "./pages/Alunos";
 import AdicionarAluno from "./pages/AdicionarAluno";
 import EditarAluno from "./pages/EditarAluno";
+import DetalharAluno from "./pages/DetalharAluno";
 import Disciplinas from "./pages/Disciplinas";
 import AdicionarDisciplina from "./pages/AdicionarDisciplina";
 import EditarDisciplina from "./pages/EditarDisciplina";
@@ -16,7 +17,7 @@ const App = () => {
     <Router>
       <NavbarComponent />
       <Routes>
-        
+        {/* Página inicial (rota privada) */}
         <Route
           path="/"
           element={
@@ -25,7 +26,11 @@ const App = () => {
             </PrivateRoute>
           }
         />
+
+        {/* Página de login (rota pública) */}
         <Route path="/login" element={<Login />} />
+
+        {/* Rotas para Alunos */}
         <Route
           path="/alunos"
           element={
@@ -51,6 +56,16 @@ const App = () => {
           }
         />
         <Route
+          path="/detalhar-aluno/:id"
+          element={
+            <PrivateRoute>
+              <DetalharAluno />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Rotas para Disciplinas */}
+        <Route
           path="/disciplinas"
           element={
             <PrivateRoute>
@@ -59,7 +74,7 @@ const App = () => {
           }
         />
         <Route
-          path="/disciplinas/nova"
+          path="/adicionar-disciplina"
           element={
             <PrivateRoute>
               <AdicionarDisciplina />
@@ -67,7 +82,7 @@ const App = () => {
           }
         />
         <Route
-          path="/disciplinas/editar/:id"
+          path="/editar-disciplina/:id"
           element={
             <PrivateRoute>
               <EditarDisciplina />
